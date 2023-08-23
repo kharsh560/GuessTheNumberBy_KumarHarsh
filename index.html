@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Clock</title>
+    <style>
+        body {
+            background-color: bisque;
+        }
+
+        .mainContainer {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #timeDisplay {
+            height: 50px;
+            width: 100px;
+            border-radius: 20px;
+            background-color: yellowgreen;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bolder;
+            font-size: larger;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainContainer">
+        <h1>Your local time is:-</h1>
+        <div id="timeDisplay"></div>
+    </div>
+</body>
+
+<script>
+    
+    
+    setInterval(function () { 
+        let currentTime = new Date();
+        document.getElementById("timeDisplay").textContent = `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`
+        //Or you may write it as follows; using ".toLocaleTimeString" as like, written in line 49;
+        //document.getElementById("timeDisplay").textContent = currentTime.toLocaleTimeString();
+    }, 1000);
+</script>
+</html>
