@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Guess The Number</title>
+    <style>
+        body {
+            background-color: grey;
+            color: blanchedalmond;
+            margin: 0;
+        }
+
+        .mainContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .titleOfProject {
+            background-color: #212121;
+            text-align: center;
+            padding: 1px;
+        }
+
+        .numberInputForm {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .buttonToSubmitGuess {
+            margin: 10px;
+            border: 0;
+            background-color: bisque;
+            border-radius: 10px;
+            padding: 5px;
+            font-weight: bolder;
+            font-size: larger;
+        }
+
+        .buttonToSubmitGuess:hover {
+            background-color: beige;
+        }
+
+        .previousGuess {
+            background-color: #E5E4E2;
+            color: black;
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="titleOfProject">
+        <h3>Number Guesssing Game</h3>
+    </div>
+    <div class="mainContainer">
+        <p>Try and guess a random number between 1 and 100.</p>
+        <p>You have 10 attempts to guess the right number!</p>
+        <h1>Guess a Number</h1>
+        <form class="numberInputForm">
+            <input type="text" class="inputHere">
+            <button class="buttonToSubmitGuess">Submit guess</button>
+        </form>
+        <p class="prevGuess">Previous Guesses:- <span class="previousGuess"></span></p>
+        <p class="displayMessage"></p>
+        <p class="remainingGuess">Guesses Remaining:- 10</p>
+    </div>
+</body>
+<script>
+
+    let randomNumber = Math.floor(Math.random() * 100) + 1;
+    let guessRemaining = 10;
+
+    document.querySelector(".numberInputForm").addEventListener("submit", function (eve) {
+        eve.preventDefault();  //the Default action of Submit Button is prevented!
+        // writing code to retrieve the number entered by the user!
+        let numberGuessed = parseInt(document.querySelector(".inputHere").value);
+        // below codes at line 84, 85 are not of much use though
+        let arrOfGuessedNumber = [];
+        arrOfGuessedNumber.push(numberGuessed);
+
+        // ###################### conditions Checking ###################### 
+
+        if (numberGuessed === randomNumber) {
+            document.querySelector(".displayMessage").textContent = `Congratulations! You have guessed the number right! :-)`
+            document.querySelector(".buttonToSubmitGuess").disabled = true;
+            guessRemaining = 1; // I needed to write 1 here bcoz, after this if scope's execution the variable guessRemaining decreases by 1!! think over it!!
+            // also you may think why I did this at line 92? Its so as to activate the code to run new game!!
+        }
+        else if (guessRemaining === 1) { //yes here it will be ===1 only as we started off with 10, though the user was using that attempt also!
+            document.querySelector(".displayMessage").textContent = `Total number of attempts are over. Hence you LOST! Better luck next time! By the way, the random number was ${randomNumber}!`
+            document.querySelector(".buttonToSubmitGuess").disabled = true;  //disables submit button
+            document.querySelector(".inputHere").value = ""; //clears the input box
+        }
+        else if (numberGuessed <= 0 || numberGuessed >= 100 || numberGuessed == "" || isNaN(numberGuessed)) {
+            document.querySelector(".displayMessage").textContent = `Please enter a valid number, means a number between 1 and 100!`
+            document.querySelector(".inputHere").value = "";
+        }
+        else if (numberGuessed < randomNumber) {
+            document.querySelector(".displayMessage").textContent = `Guess a number greater than previously guessed number`
+            //document.querySelector(".numberInputForm").reset();
+            //we Could use the method "reset()" also as shown in line 106 also!
+            document.querySelector(".inputHere").value = "";
+        }
+        else if (numberGuessed > randomNumber) {
+            document.querySelector(".displayMessage").textContent = `Guess a number lesser than previously guessed number`
+            //document.querySelector(".numberInputForm").reset();
+            //we Could use the method "reset()" also as shown in line 106 also!
+            document.querySelector(".inputHere").value = "";
+        }
+
+        // As i defined the variable guessRemaining outside this scope, means in global scope, 
+        // then the code BELOW started to work!
+        guessRemaining = guessRemaining - 1;
+        document.querySelector(".remainingGuess").textContent = `Guesses Remaining:- ${guessRemaining}`
+
+        // VVI:- see code at line 123; this is how we keep on adding new textContent without loosing the previously stored data!
+        document.querySelector(".previousGuess").innerHTML += ` (${numberGuessed}) `;
+        document.querySelector(".previousGuess").style.padding = "5px";
+
+        // now I am writing Code for what will happen when attempts are over or user has WON
+        // means how to start a new game!
+        if (guessRemaining === 0) {
+            let newGameButton = document.createElement("h2");
+            newGameButton.innerHTML = `<h2 id="newGameButtonWork">Start a New Game</h2>`;
+            newGameButton.style.backgroundColor = "#E5E4E2";
+            newGameButton.style.color = "red";
+            newGameButton.style.borderRadius = "10px";
+            newGameButton.style.padding = "5px";
+            document.querySelector(".mainContainer").appendChild(newGameButton);
+            document.querySelector("#newGameButtonWork").addEventListener("click", function () {
+                document.querySelector(".inputHere").value = "";
+                document.querySelector(".previousGuess").innerHTML = "";
+                document.querySelector(".buttonToSubmitGuess").disabled = false;
+                guessRemaining = 10;
+                document.querySelector(".remainingGuess").textContent = `Guesses Remaining:- ${guessRemaining}`;
+                document.querySelector(".previousGuess").style.padding = "0px";
+                document.querySelector(".displayMessage").textContent = "";
+                newGameButton.remove();
+            })
+        }
+    })
+
+</script>
+
+</html>
