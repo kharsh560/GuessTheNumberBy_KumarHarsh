@@ -129,9 +129,10 @@
             let newGameButton = document.createElement("h2");
             newGameButton.innerHTML = `<h2 id="newGameButtonWork">Start a New Game</h2>`;
             newGameButton.style.backgroundColor = "#E5E4E2";
-            newGameButton.style.color = "red";
-            newGameButton.style.borderRadius = "10px";
-            newGameButton.style.padding = "5px";
+            newGameButton.style.color = "blue";
+            newGameButton.style.borderRadius = "15px";
+            newGameButton.style.padding = "1px";
+            newGameButton.style.cursor = 'pointer';
             document.querySelector(".mainContainer").appendChild(newGameButton);
             document.querySelector("#newGameButtonWork").addEventListener("click", function () {
                 document.querySelector(".inputHere").value = "";
